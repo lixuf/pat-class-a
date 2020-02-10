@@ -1,0 +1,49 @@
+#include<vector>
+#include<iostream>
+using namespace std;
+int main()
+{
+	int n;
+	cin >> n;
+	vector<int> seq;
+	vector<int> index;
+	vector<int> max;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		seq.push_back(mid);
+		index.push_back(n1);
+		max.push_back(mid);
+	}
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		if (n1 == 0)
+		{
+			continue;
+		}
+		if (max[n1] + max[n1 - 1] > max[n1])
+		{
+			index[n1] = index[n1 - 1];
+			max[n1] = max[n1 - 1] + max[n1];
+		}
+	}
+	int u = 0, maxsum = max[0];
+	for (int n1 = 1; n1 < n; n1++)
+	{
+		if (max[n1] > maxsum)
+		{
+			maxsum = max[n1];
+			u = n1;
+		}
+	}
+	if (maxsum < 0)
+	{
+		maxsum = 0;
+		u = n-1;
+		index[u] = 0;
+	}
+	cout << maxsum << " " << seq[index[u]] << " " << seq[u];
+	system("pause");
+	return 0;
+}

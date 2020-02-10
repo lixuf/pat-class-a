@@ -1,0 +1,47 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int maxlen = 100010;
+struct Node
+{
+	int pre;
+	char val;
+	int post;
+	int tag;
+
+}node[maxlen];
+int main()
+{
+	int frist, second, n;
+	cin >> frist >> second >> n;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid_pre, mid_post;
+		char mid_val;
+		cin >> mid_pre >> mid_val >> mid_post;
+		node[mid_pre].pre = mid_pre;
+		node[mid_pre].val = mid_val;
+		node[mid_pre].post = mid_post;
+	}
+	int next = frist;
+	while (next != -1)
+	{
+		node[next].tag = 1;
+		next = node[next].post;
+	}
+	next = second;
+	while (next != -1)
+	{
+		if (node[next].tag == 1)
+		{
+			printf("%05d", next);
+			system("pause");
+			return 0;
+		}
+		next = node[next].post;
+	}
+	cout << -1;
+	system("pause");
+	return 0;
+}

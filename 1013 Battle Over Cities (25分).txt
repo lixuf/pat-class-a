@@ -1,0 +1,64 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+const int maxlen = 1001;
+vector<int> map[maxlen];
+bool insight[maxlen];
+vector<int> removement;
+void DFS(int x,int y)
+{
+	if (insight[x] == true || x == y)
+	{
+		return;
+	}
+	insight[x] = true;
+	for (int n1 = 0; n1 < map[x].size(); n1++)
+	{
+		DFS(map[x][n1], y);
+	}
+	return;
+}
+int main()
+{
+	int n, m, k;
+	cin >> n >> m >> k;
+	for (int n1 = 0; n1 < m; n1++)
+	{
+		int mid1, mid2;
+		cin >> mid1 >> mid2;
+		map[mid1].push_back(mid2);
+		map[mid2].push_back(mid1);
+	}
+	for (int n1 = 0; n1 < k; n1++)
+	{
+		int mid1;
+		cin >> mid1;
+		removement.push_back(mid1);
+	}
+	for (int n1 = 0; n1 < k; n1++)
+	{
+		int block = 0;
+		for (int n2 = 1; n2 <= n; n2++)
+		{
+			insight[n2] = false;
+		}
+		for (int n2 = 1; n2 <=n; n2++)
+		{
+			if (insight[n2] == false && n2 != removement[n1])
+			{
+				block++;
+				DFS(n2,removement[n1]);
+			}
+		}
+		if (n1 != k - 1)
+		{
+			cout << --block << "\n";
+		}
+		else
+		{
+			cout << --block;
+		}
+	}
+	system("pause");
+	return 0;
+}

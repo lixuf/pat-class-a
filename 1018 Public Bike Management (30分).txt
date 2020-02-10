@@ -1,0 +1,162 @@
+#include<iostream>
+#include<map>
+#include<vector>
+#include<stack>
+using namespace std;
+struct node
+{
+	int index;
+	int time;
+	node(int _index, int _time) :index (_index), time (_time){};
+};
+struct rnode
+{
+	int daiqu;
+	int daihui;
+	int road;
+	rnode(int _daiqu, int _daihui, int _road) :daiqu(_daiqu), daihui(_daihui), road(_road) {};
+};
+int cmax;
+const int maxn = 501;
+int n, sp, m;
+vector<int> bikenum;
+vector<node> tu[maxn];
+vector<int> fangwen;
+vector<int> juli;
+const int inf = 1000000000;
+vector<int> lujing[maxn];
+void dejest()
+{
+	for (int n1 = 0; n1 <= n; n1++)
+	{
+		int index = -1, min = inf;
+		for (int n2 = 0; n2 <= n; n2++)
+		{
+			if (fangwen[n2] == 0 && juli[n2] < min)
+			{
+				index = n2;
+				min = juli[n2];
+			}
+		}
+        if(index==-1)
+        {
+            return;
+        }
+		fangwen[index] = 1;
+		for (int n2 = 0; n2 < tu[index].size(); n2++)
+		{
+			int ind = tu[index][n2].index;
+			int tim = tu[index][n2].time;
+			if (fangwen[ind] == 0 && juli[index] + tim < juli[ind])
+			{
+				juli[ind] = juli[index] + tim;
+			}
+		}
+	}
+}
+int minjuli;
+vector<int> result_r;
+vector<int> endresult;
+int brqu=inf;
+int brbc = inf;
+void DFS(int index,int ju,int qu,int hui)
+{
+	result_r.push_back(index);
+	if (ju > minjuli)
+	{
+		result_r.pop_back();
+		return;
+	}
+	else if(ju==minjuli)
+	{
+		if (index == sp)
+		{
+			if (qu < brqu)
+			{
+				brqu = qu;
+				brbc = hui;
+				endresult = result_r;
+			}
+			else if (qu==brqu&&hui < brbc)
+			{
+				brbc = hui;
+				endresult = result_r;
+			}
+		}
+
+			result_r.pop_back();
+			return;
+
+	}
+	fangwen[index] = 0;
+	for (int n1 = 0; n1 < tu[index].size(); n1++)
+	{
+		int ind = tu[index][n1].index;
+		int tim = tu[index][n1].time;
+		if (fangwen[ind] == 1)
+		{
+			if (bikenum[ind] < cmax / 2)
+			{
+				if (hui >  cmax / 2- bikenum[ind] )
+				{
+					DFS(ind, ju + tim, qu, hui + bikenum[ind] - cmax / 2);
+				}
+				else
+				{
+					DFS(ind, ju + tim, qu +  cmax / 2 -bikenum[ind]- hui, 0);
+				}
+			}
+			else if (bikenum[ind] > cmax / 2)
+			{
+				
+					DFS(ind, ju + tim, qu, hui + bikenum[ind] - cmax / 2);
+				
+			}
+			else
+			{
+				DFS(ind, ju + tim, qu, hui);
+			}
+		}
+	}
+	result_r.pop_back();
+}
+int main()
+{
+	cin >> cmax >> n >> sp >> m;
+	bikenum.push_back(0);
+
+	juli.push_back(0);
+
+	fangwen.push_back(0);
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		bikenum.push_back(mid);
+
+		fangwen.push_back(0);
+		juli.push_back(inf);
+	}
+	for (int n1 = 0; n1 < m; n1++)
+	{
+		int mid1, mid2, mid3;
+		cin >> mid1 >> mid2 >> mid3;
+		tu[mid1].push_back(node(mid2, mid3));
+		tu[mid2].push_back(node(mid1, mid3));
+	}
+	dejest();
+	minjuli = juli[sp];
+	DFS(0,0,0,0);
+	cout << brqu << " ";
+	for (int n1 = 0; n1 < endresult.size(); n1++)
+	{
+		cout << endresult[n1];
+		if (n1 != endresult.size() - 1)
+		{
+			cout << "->";
+		}
+	}
+	cout << " " << brbc;
+	system("pause");
+	return 0;
+}

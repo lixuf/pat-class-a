@@ -1,0 +1,61 @@
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+	int n;
+	cin >> n;
+	string card1[55];
+	string card2[55];
+	string order = "SHCDJ";
+	int ordern[55];
+	for (int n1 = 0; n1 <5; n1++)
+	{
+		int n2 = 14;
+		if (n1 == 4)
+		{
+			n2 = 3;
+		}
+		for (int n3 = 1; n3 < n2; n3++)
+		{
+			card1[13 * n1 + n3] = order[n1];
+			if (n3 > 9)
+			{
+				card1[13 * n1 + n3].append(1, char(49));
+				card1[13 * n1 + n3].append(1, char(n3-10 + 48));
+			}
+			else
+			{
+				card1[13 * n1 + n3].append(1, char(n3 + 48));
+			}
+			int mid;
+			cin >> mid;
+			ordern[13 * n1 + n3] = mid;
+		}
+	}
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		for (int n2 = 1; n2 <= 54; n2++)
+		{
+			card2[ordern[n2]] = card1[n2];
+		}
+		for (int n2 = 1; n2 <= 54; n2++)
+		{
+			card1[n2] = card2[n2];
+		}
+	}
+	for (int n1 = 1; n1 <= 54; n1++)
+	{
+		if (n1 != 54)
+		{
+			cout << card1[n1] << " ";
+		}
+		else
+		{
+			cout << card1[n1];
+		}
+	}
+	system("pause");
+	return 0;
+	
+}

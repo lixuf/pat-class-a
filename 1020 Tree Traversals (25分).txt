@@ -1,0 +1,82 @@
+#include<iostream>
+#include<cstdio>
+#include<queue>
+#include<stack>
+#include<vector>
+using namespace std;
+const int maxlen = 31;
+struct node
+{
+	int val;
+	node *left;
+	node *right;
+};
+vector<int> in;
+vector<int> post;
+int n;
+node *create_tree(int inl,int inr,int postl,int postr)
+{
+	int k;
+	if (postl >postr)
+	{
+		return NULL;
+	}
+	node * root = new node;
+	root->val = post[postr];
+	
+	for (int n1 = inl; n1 <= inr; n1++)
+	{
+		if (in[n1] == post[postr])
+		{
+			k = n1;
+			break;
+		}
+	}
+	root->left = create_tree(inl,k-1,postl,postl+k-1-inl);
+	root->right = create_tree(k+1,inr,postl+k-inl,postr-1);
+	
+	return root;
+}
+int main()
+{
+	cin >> n;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		post.push_back(mid);
+	}
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		in.push_back(mid);
+	}
+	node *root = create_tree(0,n-1,0,n-1);
+	queue<node*> level;
+	level.push(root);
+	while (!level.empty())
+	{
+		cout << level.front()->val ;
+		n--;
+		if (n != 0)
+		{
+			cout << ' ';
+		}
+		if (level.front()->left != NULL)
+		{
+			level.push(level.front()->left);
+		}
+		if (level.front()->right != NULL)
+		{
+			level.push(level.front()->right);
+		}
+		level.pop();
+		
+	}
+	system("pause");
+	return 0;
+	
+	
+	
+}

@@ -1,0 +1,153 @@
+#include<vector>
+#include<iostream>
+#include<stack>
+using namespace std;
+struct node
+{
+	int val;
+	node * left;
+	node * right;
+	
+};
+
+void pre(node * mid,vector<int> & vi)
+{
+	if (mid == NULL)return;
+		vi.push_back(mid->val);
+		pre(mid->left,vi);
+		pre(mid->right,vi);
+}
+void post(node * root,vector<int> & vi)
+{
+	if (root== NULL)
+	{
+		return;
+	}
+	post(root->left,vi);
+	post(root->right,vi);
+	vi.push_back(root->val);
+	return;
+
+}
+void insert(node * &root, int data)
+{
+	if (root == NULL)
+	{
+		root = new node;
+		root->val = data;
+		root->left = NULL;
+		root->right = NULL;
+		return;
+	}
+	if (root->val > data)
+	{
+		
+		insert(root->left, data);
+	}
+	else
+	{
+		
+		insert(root->right, data);
+	}
+}
+void mirr(node * &root, int data)
+{
+	if (root == NULL)
+	{
+		root = new node;
+		root->val = data;
+		root->right = NULL;
+		root->left = NULL;
+
+		return;
+	}
+	if (data >= root->val)
+	{
+		mirr(root->left, data);
+	}
+	else
+	{
+		mirr(root->right, data);
+	}
+}
+vector<int> seq, preorder, postorder;
+int main()
+{
+	
+	int n;
+	cin >> n;
+
+	node * root = NULL;
+	
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		seq.push_back(mid);
+		insert(root, mid);
+	}
+	
+	pre(root,preorder);
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		if (preorder[n1] != seq[n1])
+		{
+			break;
+		}
+		else if (n1 == n - 1)
+		{
+			cout << "YES" << "\n";
+			post(root,postorder);
+			for (int n2 = 0; n2 < n; n2++)
+			{
+				cout << postorder[n2];
+				if (n2 != n - 1)
+				{
+					cout << ' ';
+				}
+				else
+				{
+					cout << "\n";
+				}
+			}
+			return 0;
+		}
+	}
+	preorder.clear();
+	node * root2 = NULL;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		mirr(root2, seq[n1]);
+	}
+	pre(root2,preorder);
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		if (preorder[n1] != seq[n1])
+		{
+			break;
+		}
+		else if (n1 == n - 1)
+		{
+			cout << "YES" << "\n";
+			post(root2,postorder);
+			for (int n2 = 0; n2 < n; n2++)
+			{
+				cout << postorder[n2];
+				if (n2 != n - 1)
+				{
+					cout << ' ';
+				}
+				else
+				{
+					cout << "\n";
+				}
+			}
+			return 0;
+		}
+	}
+	cout<<"NO";
+	
+	return 0;
+
+
+}

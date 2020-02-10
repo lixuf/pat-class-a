@@ -1,0 +1,37 @@
+#includeiostream
+#includevector
+#includestring
+#includeutility
+#includealgorithm
+using namespace std;
+bool cmp1(pairstring, pairint, int a, pairstring, pairint, int b)
+{
+	return a.second.first  b.second.first;
+}
+bool cmp2(pairstring, pairint, int a, pairstring, pairint, int b)
+{
+	return a.second.secondb.second.second;
+}
+int main()
+{
+	vectorpairstring, pairint, int alldata;
+	int  n;
+	cin  n;
+	for (int n1 = 0; n1  n; n1++)
+	{
+		string num, inti, outti;
+		int intim, outtim;
+		cin  num  inti  outti;
+		outtim = stoi(outti.substr(0, 2))  10000 + stoi(outti.substr(3, 2))  100 + stoi(outti.substr(6, 2));
+		intim = stoi(inti.substr(0, 2))  10000 + stoi(inti.substr(3, 2))  100 + stoi(inti.substr(6, 2));
+		pairint, int mid2 = { intim,outtim };
+		pairstring, pairint, int mid1 = { num,mid2 };
+		alldata.push_back(mid1);
+	}
+	sort(alldata.begin(), alldata.end(), cmp1);
+	cout  alldata[0].first   ;
+	sort(alldata.begin(), alldata.end(), cmp2);
+	cout  alldata[0].first;
+	system(pause);
+	return 0;
+}

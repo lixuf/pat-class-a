@@ -1,0 +1,30 @@
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+int main()
+{
+	string input;
+	cin >> input;
+	int yu = input.size()% 3;
+	int n = input.size() / 3;
+	int cou=0;
+	if (yu == 0)
+	{
+		cou = 1;
+	}
+	
+		for (int n1 = 0; n1 < n-cou; n1++)
+		{
+			cout << input[n1];
+			for (int n2 = 0; n2 < n +yu- 2+2*cou; n2++)
+			{
+				cout << " ";
+			}
+			cout << input[input.size() - n1-1]<<"\n";
+		}
+		cout << input.substr(n-cou , n+yu+2*cou);
+		system("pause");
+		return 0;
+	
+}

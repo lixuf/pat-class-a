@@ -1,0 +1,67 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int main()
+{
+	int jiou = 0;
+	int shu, jinzhi;
+	cin >> shu >> jinzhi;
+	vector<int> chuan;
+	while (1)
+	{
+		int yu = shu % jinzhi;
+		chuan.push_back(yu);
+		shu = shu / jinzhi;
+		if (shu == 0)
+		{
+			break;
+		}
+	}
+	if(chuan.size()==1)
+	{
+		cout << "Yes\n" << chuan[0];
+		return 0;
+	}
+	int zhong = chuan.size() / 2;
+	if (chuan.size() % 2 == 0)
+	{
+		chuan.insert(chuan.begin() + zhong, 0);
+		jiou = 1;
+	}
+	for (int n1 = 1; n1 <= zhong; n1++)
+	{
+		if (chuan[zhong + n1] != chuan[zhong - n1])
+		{
+			cout << "No\n";
+			if (jiou == 1)
+			{
+				chuan.erase(chuan.begin() + chuan.size() / 2);
+			}
+			for (int n1 = chuan.size()-1; n1>=0; n1--)
+			{
+				cout << chuan[n1];
+				if (n1 != 0)
+				{
+					cout << " ";
+				}
+			}
+			system("pause");
+			return 0;
+		}
+	}
+	cout << "Yes\n";
+	if (jiou == 1)
+	{
+		chuan.erase(chuan.begin() + chuan.size() / 2);
+	}
+	for (int n1=0;n1<chuan.size();n1++)
+	{
+		cout << chuan[n1];
+		if (n1 != chuan.size() - 1)
+		{
+			cout << " ";
+		}
+	}
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,63 @@
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+	int n;
+	cin >> n;
+	int fm[2] = { 0 };
+	int maxf = 0;
+	int minm = 101;
+	string minmdata;
+	string maxfdata;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		string name, gender, num;
+		int grade;
+		cin >> name >> gender >> num >> grade;
+		if (gender == "M")
+		{
+			fm[1] = 1;
+			if (minm > grade)
+			{
+				minm = grade;
+				minmdata = name.append(" ").append(num);
+			}
+		}
+		else
+		{
+			fm[0] = 1;
+			if (maxf < grade)
+			{
+				maxf = grade;
+				maxfdata = name.append(" ").append(num);
+			}
+		}
+	}
+	if (fm[0] == 1)
+	{
+		cout << maxfdata << "\n";
+	}
+	else
+	{
+		cout << "Absent" << "\n";
+	}
+	if (fm[1] == 1)
+	{
+		cout << minmdata << "\n";
+	}
+	else
+	{
+		cout << "Absent" << "\n";
+	}
+	if (fm[1] == 1 && fm[0] == 1)
+	{
+		cout<<maxf - minm;
+	}
+	else
+	{
+		cout << "NA";
+	}
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,39 @@
+#include<iostream>
+#include<string>
+using namespace std;
+string jinzhi[3] = { "A","B","C" };
+string zhuan(int x)
+{
+	string outd;
+	do
+	{
+		int yu = x % 13;
+		if (yu >= 10)
+		{
+			outd.append(jinzhi[yu - 10]);
+		}
+		else
+		{
+			outd.insert(outd.end(), yu + 48);
+		}
+		x = x / 13;
+	} while (x != 0);
+	if (outd.size() == 1)
+	{
+		outd.insert(outd.end(), '0');
+	}
+
+	return outd;
+}
+int main()
+{
+	int r, g, b;
+	cin >> r >> g >> b;
+	string R, G, B;
+	R = zhuan(r);
+	G = zhuan(g);
+	B = zhuan(b);
+	cout << "#" << R[1]<<R[0] << G[1]<<G[0]<< B[1]<<B[0];
+	system("pause");
+	return 0;
+}

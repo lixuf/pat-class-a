@@ -1,0 +1,104 @@
+#include<map>
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+const int maxlen = 2001;
+int juzhen[maxlen][maxlen] = { 0 };
+vector<int>fangwen;
+vector<int> sumtime;
+map<string, int> s2i;
+map<int, string> i2s;
+int k;
+map<string, int>result;
+int id = 0;
+void DFS(int n1, int & menber, int & maxren, int & zong)
+{
+	menber += 1;
+	fangwen[n1] = 1;
+	if (sumtime[n1] > sumtime[maxren])
+	{
+		maxren = n1;
+	}
+	for (int n2 = 0; n2 < id; n2++)
+	{
+		if (juzhen[n1][n2] != 0 )
+		{
+			zong += juzhen[n1][n2];
+			juzhen[n1][n2] = 0;
+			juzhen[n2][n1] = 0;
+			if (fangwen[n2] == 0)
+			{
+				DFS(n2, menber, maxren, zong);
+			}
+		}
+	}
+}
+void DFStrip()
+{
+	for (int n1 = 0; n1 < id; n1++)
+	{
+	
+			if (fangwen[n1]== 0)
+			{
+				int member = 0;
+				int maxren = n1;
+				int zong = 0;
+				DFS(n1,member,maxren,zong);
+				
+				if (member > 2 && zong > k)
+				{
+					result[i2s[maxren]] = member;
+				}
+			}
+	
+	}
+}
+
+int main()
+{
+	int n;
+	cin >> n >> k;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		string mid1[2];
+		int mid2[2];
+		cin >> mid1[0] >> mid1[1];
+		int mid3;
+		cin >> mid3;
+		for (int n2 = 0; n2 < 2; n2++)
+		{
+			if (s2i.count(mid1[n2]) == 0)
+			{
+				s2i[mid1[n2]] = id;
+				i2s[id] = mid1[n2];
+				fangwen.push_back(0);
+				sumtime.push_back(0);
+				id++;
+			}
+			mid2[n2] = s2i[mid1[n2]];
+		}
+		juzhen[mid2[0]][mid2[1]] += mid3;
+		juzhen[mid2[1]][mid2[0]] += mid3;
+		sumtime[mid2[0]] += mid3;
+		sumtime[mid2[1]] += mid3;
+	}
+	DFStrip();
+	cout << result.size();
+	if (result.size() == 0)
+	{
+		return 0;
+	}
+	cout << "\n";
+	map<string, int >::iterator itr = result.begin();
+	for (int n1 = 0; n1 < result.size(); n1++,itr++)
+	{
+		cout << itr->first << " " << itr->second;
+		if (n1 != (result.size() - 1))
+		{
+			cout << "\n";
+		}
+	}
+	system("pause");
+	return 0;
+}

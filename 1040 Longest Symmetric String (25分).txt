@@ -1,0 +1,47 @@
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+int main()
+{
+	string ins;
+	getline(cin, ins);
+	vector<int> mid(ins.size(), 0);
+	vector<vector<int>> dp(ins.size(), mid);
+	int maxsum = 0;
+	for (int n1 = 0; n1 < ins.size(); n1++)
+	{
+		for (int n2 = 0; n2 <= n1; n2++)
+		{
+			if (ins[n1] == ins[n2])
+			{
+				if (n1 == n2)
+				{
+					dp[n1][n2] = 1;
+					dp[n2][n1] = 1;
+				}
+				else
+				{
+					if (n2 + 1 == n1)
+					{
+						dp[n1][n2] = 2;
+						dp[n2][n1] = 2;
+					}
+					else if (dp[n1 - 1][n2 + 1] != 0)
+					{
+						dp[n1][n2] = 2 + dp[n1 - 1][n2 + 1];
+						dp[n2][n1] = 2 + dp[n1 - 1][n2 + 1];
+					}
+				}
+				
+			}
+			if (dp[n1][n2] > maxsum)
+			{
+				maxsum = dp[n1][n2];
+			}
+		}
+	}
+	cout << maxsum;
+	system("pause");
+	return 0;
+}
