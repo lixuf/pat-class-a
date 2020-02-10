@@ -1,0 +1,96 @@
+#include<iostream>
+#include<vector>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+const int maxn = 1010;
+vector<int> father, action(maxn, -1), isroot;
+void init(int n)
+{
+	for (int n1 = 0; n1 < n;n1++)
+	{
+		father.push_back(n1);
+		isroot.push_back(0);
+	}
+	return;
+}
+int findfather(int n)
+{
+	int x = n;
+	while (x != father[x])
+	{
+		x = father[x];
+	}
+	while (n != father[n])
+	{
+		n = father[n];
+		father[n] = x;
+	}
+	return x;
+}
+void unnited(int n1, int n2)
+{
+	int fa1 = findfather(n1);
+	int fa2 = findfather(n2);
+	father[n1] = fa1;
+	father[n2] = fa1;
+	return;
+}
+bool cmp(int x, int y)
+{
+	return x > y;
+}
+int main()
+{
+	int n;
+	cin >> n;
+	init(n);
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int actnum;
+		cin >> actnum;
+		
+		char detain;
+		cin >> detain;
+		
+		for (int n2 = 0; n2 < actnum; n2++)
+		{
+			int mid;
+			cin >> mid;
+			if (action[mid] == -1)
+			{
+				action[mid] = n1;
+			}
+			unnited(n1, findfather(action[mid]));
+		}
+	}
+	int num=0;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		if (isroot[findfather(n1)] == 0)
+		{
+			isroot[findfather(n1)] ++;
+			num++;
+		}
+		else
+		{
+			isroot[findfather(n1)] ++;
+		}
+	}
+	sort(isroot.begin(), isroot.end(),cmp);
+	cout << num << "\n";
+	for (int n1 = 0; n1 < num; n1++)
+	{
+		cout << isroot[n1];
+		if (n1 == num - 1)
+		{
+			cout << "\n";
+		}
+		else
+		{
+			cout << ' ';
+		}
+	}
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,82 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int n, k, p,maxsum=-1;
+
+vector<int> fector,result,temp;
+
+int pow(int a)
+{
+	int b = 1;
+	for (int n1 = 0; n1 < p; n1++)
+	{
+		b = b * a;
+	}
+	
+	return b;
+}
+int init()
+{
+	int a = 0;
+	while (pow(a) < n)
+	{
+		fector.push_back(pow(a++));
+	}
+	a--;
+	return a;
+}
+void dfs(int index, int sum, int fecn, int fecsum,int max)
+{
+	if (fecn == k && sum == n)
+	{
+		if (fecsum > maxsum)
+		{
+			result = temp;
+			maxsum = fecsum;
+			return;
+		}
+	}
+	if (fecn > k || sum > n)
+	{
+		return;
+	}
+	if (index > 0)
+	{
+		temp.push_back(index);
+		dfs(index, sum + fector[index], fecn + 1, fecsum + index,max);
+		temp.pop_back();
+		dfs(index - 1, sum, fecn, fecsum,max);
+	}
+}
+int main()
+{
+	int init();
+	int pow(int a);
+	cin >> n >> k >> p;
+	if (n == 0)
+	{
+		cout << "Impossible";
+		return 0;
+	}
+	int max;
+	max=init();
+	
+	dfs(max,0,0,0,max);
+	if (maxsum == -1)
+	{
+		cout << "Impossible";
+	}
+	else
+	{
+		cout << n << " = "<<result[0]<<"^"<<p;
+		for (int n1 = 1; n1 < result.size(); n1++)
+		{
+			cout<<" + " << result[n1] << "^" << p;
+		}
+
+	}
+	system("pause");
+	return 0;
+}

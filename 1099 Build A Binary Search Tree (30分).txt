@@ -1,0 +1,76 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<queue>
+using namespace std;
+const int maxlen = 101;
+vector<int> inval;
+struct Node
+{
+	int val, left, right;
+}node[maxlen];
+int n,index=0;
+void inorder(int root)
+{
+	if (root ==-1)
+	{
+		return;
+	}
+	inorder(node[root].left);
+	node[root].val = inval[index++];
+	inorder(node[root].right);
+}
+void levelorder()
+{
+	queue<int> level;
+	level.push(0);
+	int maxlen = level.size();
+	while (!level.empty())
+	{
+		while (maxlen--)
+		{
+			if (node[level.front()].left != -1)
+			{
+				level.push(node[level.front()].left);
+			}
+			if (node[level.front()].right != -1)
+			{
+				level.push(node[level.front()].right);
+			}
+			cout << node[level.front()].val;
+			level.pop();
+			if (maxlen != 0)
+			{
+				cout << ' ';
+			}
+		}
+		maxlen = level.size();
+		if (maxlen != 0)
+		{
+			cout << " ";
+		}
+	}
+}
+int main()
+{
+	
+	cin >> n;
+	for (int n1 = 0; n1 <n; n1++)
+	{
+		int mid1, mid2;
+		cin >> mid1 >> mid2;
+		node[n1].left = mid1;
+		node[n1].right = mid2;
+	}
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		inval.push_back(mid);
+	}
+	sort(inval.begin(), inval.end());
+	inorder(0);
+	levelorder();
+	system("pause");
+	return 0;
+}

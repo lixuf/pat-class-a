@@ -1,0 +1,137 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+int n;
+vector<int> sq1, sq2, sq3;
+bool beq()
+{
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		if (sq1[n1] != sq2[n1])
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+bool beq2()
+{
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		if (sq3[n1+1] != sq2[n1])
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+void adjust(int low, int hight)
+{
+	int i, j;
+	i = low;
+	j = low * 2;
+	while (j <= hight)
+	{
+		if (j + 1 <= hight)
+		{
+			if (sq3[j] < sq3[j + 1])
+			{
+				j = j + 1;
+			}
+		}
+		if (sq3[j] >sq3[i])
+		{
+			swap(sq3[i], sq3[j]);
+			i = j;
+			j = i * 2;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+}
+int main()
+{
+	cin >> n;
+	sq3.push_back(n);
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		sq1.push_back(mid);
+		sq3.push_back(mid);
+
+	}
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		sq2.push_back(mid);
+	}
+
+	for (int n1 = 1; n1 < n; n1++)
+	{
+		sort(sq1.begin(), sq1.begin() + n1);
+		if (beq())
+		{
+			cout << "Insertion Sort\n";
+			sort(sq1.begin(), sq1.begin() + n1 + 1);
+			for (int n2 = 0; n2 < n; n2++)
+			{
+				if (n2 != n - 1)
+				{
+					cout << sq1[n2] << " ";
+				}
+				else
+				{
+					cout << sq1[n2];
+				}
+			}
+			system("pause");
+			return 0;
+		}
+		else if (n1 == n - 1)
+		{
+			break;
+		}
+	}
+	int stop = 0;
+
+	for (int n1 = n / 2; n1 > 0; n1--)
+	{
+		adjust(n1, n);
+	}
+	for (int n1 = n; n1 > 1; n1--)
+	{
+		if (n1 != n && beq2())
+		{
+			stop = 1;
+		}
+		swap(sq3[1], sq3[n1]);
+		adjust(1, n1-1);
+		if (stop)
+		{
+			cout << "Heap Sort\n";
+			for (int n2 = 1; n2 <=n; n2++)
+			{
+				if (n2 != n)
+				{
+					cout << sq3[n2] << " ";
+				}
+				else
+				{
+					cout << sq3[n2];
+				}
+			}
+			break;
+		}
+	}
+
+
+	
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,74 @@
+#include<cstdio>
+#include<vector>
+#include<queue>
+#include<cmath>
+using namespace std;
+const int maxlen = 100010;
+struct Node
+{
+	vector<int> son;
+}node[maxlen];
+
+int main()
+{
+	int n;
+	double price, precen;
+	scanf("%d%lf%lf", &n, &price, &precen);
+	precen = precen / 100 + 1;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int num;
+		scanf("%d", &num);
+		for (int n2 = 0; n2 < num; n2++)
+		{
+			int mid;
+			scanf("%d", &mid);
+			node[n1].son.push_back(mid);
+		}
+		
+	}
+	queue<int> one, two;
+	one.push(0);
+	int level = 0;
+	int blank = 0;
+	while (!one.empty() || !two.empty())
+	{
+		while (!one.empty())
+		{
+			if (node[one.front()].son.size() == 0)
+			{
+				blank++;
+			}
+			for (int n1 = 0; n1 < node[one.front()].son.size(); n1++)
+			{
+				two.push(node[one.front()].son[n1]);
+			}
+			one.pop();
+		}
+		if (blank != 0)
+		{
+			break;
+		}
+		level++;
+		while (!two.empty())
+		{
+			if (node[two.front()].son.size() == 0)
+			{
+				blank++;
+			}
+			for (int n1 = 0; n1 < node[two.front()].son.size(); n1++)
+			{
+				one.push(node[two.front()].son[n1]);
+			}
+			two.pop();
+		}
+		if (blank != 0)
+		{
+			break;
+		}
+		level++;
+	}
+	printf("%.4lf %d", price*pow(precen, double(level)), blank);
+	
+	return 0;
+}

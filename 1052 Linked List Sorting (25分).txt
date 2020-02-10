@@ -1,0 +1,74 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+const int maxlen = 100010;
+struct Node
+{
+	int pre, val, post;
+}node[maxlen];
+bool cmp(Node &a, Node &b)
+{
+	if (a.val < b.val)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+int main()
+{
+	bool cmp(Node &a,Node &b);
+	int n, start_address;
+	int vaild[maxlen];
+    for(int n1=0;n1<maxlen;n1++)
+    {
+        vaild[n1]=0;
+    }
+	cin >> n >> start_address;
+	
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		
+		int mid_pre;
+		
+		cin >> mid_pre;
+		node[mid_pre].pre = mid_pre;
+		cin >> node[mid_pre].val >> node[mid_pre].post;
+	}
+	int count = 0;
+	int next = start_address;
+	while (next != -1)
+	{
+		count++;
+		vaild[next] = 1;
+		next = node[next].post;
+	}
+	if (count == 0) 
+	{
+		printf("0 -1\n");
+		return 0;
+	}
+
+	for (int n1 = 0; n1 < maxlen; n1++)
+	{
+		if (vaild[n1] !=1)
+		{
+			node[n1].val =maxlen;
+		}
+	}
+
+	sort(node, node + maxlen, cmp);
+	cout << count << ' ';
+	printf("%05d\n", node[0].pre);
+	for (int n1 = 0; n1 < count-1; n1++)
+	{
+		
+		printf("%05d %d %05d\n", node[n1].pre, node[n1].val, node[n1 + 1].pre);
+	}
+	printf("%05d %d %d\n", node[count-1].pre, node[count-1].val, -1);
+	system("pause");
+	return 0;
+	
+	
+}

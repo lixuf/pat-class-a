@@ -1,0 +1,85 @@
+#include<vector>
+#include<iostream>
+#include<queue>
+using namespace std;
+const int maxlen = 1002;
+int juzhen[maxlen][maxlen] = { 0 };
+int n, L;
+vector<int> fa;
+void BFS(int ren, int & follow)
+{
+	int level = 0;
+	vector<int>fangwen(n+1, 0);
+	fangwen[ren] = 1;
+	queue<int> rendui;
+	for (int n1 = 1; n1 <= n; n1++)
+	{
+		if (juzhen[ren][n1] != 0&&fangwen[n1]==0)
+		{
+			rendui.push(n1);
+			fangwen[n1] = 1;
+		}
+	}
+	while (!rendui.empty() && level < L)
+	{
+		int qsize = rendui.size();
+		follow += qsize;
+		for (int n1 = 0; n1 < qsize; n1++)
+		{
+			int mid = rendui.front();
+			rendui.pop();
+			for (int n2 = 1; n2 <= n; n2++)
+			{
+				if (juzhen[mid][n2] != 0 && fangwen[n2] == 0)
+				{
+					rendui.push(n2);
+					fangwen[n2] = 1;
+				}
+			}
+		}
+		level += 1;
+	}
+
+
+}
+void BFStrip()
+{
+	for (int n1 = 0; n1 < fa.size(); n1++)
+	{
+		int follow = 0;
+		BFS(fa[n1], follow);
+		cout << follow;
+		if (n1 != fa.size() - 1)
+		{
+			cout << "\n";
+		}
+	}
+}
+int  main()
+{
+	cin >> n >> L;
+	for (int n1 = 1; n1 <= n; n1++)
+	{
+	
+		int mid;
+		cin >> mid;
+		for(int n2 = 0; n2 < mid; n2++)
+		{
+			int mid1;
+			cin >> mid1;
+			juzhen[mid1][n1]= 1;
+		}
+	}
+
+		int mid;
+		cin >> mid;
+		for (int n2 = 0; n2 < mid; n2++)
+		{
+			int mid1;
+			cin >> mid1;
+			fa.push_back(mid1);
+		}
+	BFStrip();
+	system("pause");
+	return 0;
+}

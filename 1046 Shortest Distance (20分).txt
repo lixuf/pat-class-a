@@ -1,0 +1,52 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int main()
+{
+	int n;
+	cin >> n;
+	int sum=0;
+	vector<int> shun;
+	shun.push_back(0);
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		sum += mid;
+		shun.push_back( sum);
+	}
+	int m;
+	cin >> m;
+	vector<int>result;
+	for (int n1 = 0; n1 < m; n1++)
+	{
+		int mid1, mid2;
+		cin >> mid1 >> mid2;
+		if (mid1 > mid2)
+		{
+			int t = mid1;
+			mid1 = mid2;
+			mid2 = t;
+		}
+		int pre = shun[mid2-1] - shun[mid1-1];
+		int post = sum - pre;
+		if (pre > post)
+		{
+			result.push_back(post);
+		}
+		else
+		{
+			result.push_back(pre);
+		}
+	}
+	for (int n1 = 0; n1 < m; n1++)
+	{
+		cout << result[n1];
+		if (n1 != (m - 1))
+		{
+			cout << "\n";
+		}
+	}
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,55 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int max(int a, int b)
+{
+	if (a > b)
+		return a;
+	else
+		return b;
+}
+int main()
+{
+	int n;
+	cin >> n;
+	int m;
+	cin >> m;
+	vector<int> a;
+	a.push_back(0);
+	for (int n1 = 0; n1 < m; n1++)
+	{
+		int mid;
+		cin >> mid;
+		a.push_back(mid);
+	}
+	int m1;
+	cin >> m1;
+	vector<int> b;
+	b.push_back(0);
+	for (int n1 = 0; n1 < m1; n1++)
+	{
+		int mid;
+		cin >> mid;
+		b.push_back(mid);
+	}
+	vector<int> mid(m1 + 1, 0);
+	vector<vector<int>> dp(m + 1,mid);
+	for (int n1 = 1; n1 < a.size(); n1++)
+	{
+		for (int n2 = 1; n2 < b.size(); n2++)
+		{
+			if (a[n1] == b[n2])
+			{
+				dp[n1][n2] = max(dp[n1 - 1][n2 - 1], dp[n1][n2 - 1]) + 1;
+			}
+			else
+			{
+				dp[n1][n2] = max(dp[n1 - 1][n2 - 1], dp[n1][n2 - 1]);
+			}
+		}
+	}
+	cout << dp[m][m1];
+	system("pause");
+	return 0;
+
+}

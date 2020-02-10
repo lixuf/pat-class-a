@@ -1,0 +1,75 @@
+#include<cstdio>
+#include<iostream>
+#include<vector>
+#include<queue>
+using namespace std;
+const int maxlen = 100010;
+struct Node
+{
+	
+	vector<int> son;
+}node[maxlen];
+int main()
+{
+	int n;
+	cin >> n;
+	double precen, price;
+	scanf("%lf%lf", &price, &precen);
+	precen = precen / 100 + 1;
+	int root;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		if (mid == -1)
+		{
+			root = n1;
+			continue;
+		}
+		node[mid].son.push_back(n1);
+		
+	}
+	queue<int> one, two;
+	one.push(root);
+	int number1,number2;
+	while (!one.empty() || !two.empty())
+	{
+		number1 = one.size();
+		while (!one.empty())
+		{
+			for (int n1 = 0; n1 < node[one.front()].son.size(); n1++)
+			{
+				two.push(node[one.front()].son[n1]);
+			}
+			one.pop();
+		}
+		number2 = two.size();
+		price *= precen;
+		while (!two.empty())
+		{
+
+			for (int n1 = 0; n1 < node[two.front()].son.size(); n1++)
+			{
+				one.push(node[two.front()].son[n1]);
+			}
+			two.pop();
+
+		}
+		if (!one.empty())
+		{
+			price *= precen;
+		}
+	}
+	
+	printf("%.2f ", price);
+	if (number2 != 0)
+	{
+		cout << number2 << '\n';
+	}
+	else
+	{
+		cout << number1 << '\n';
+	}
+	system("pause");
+	return 0;
+}

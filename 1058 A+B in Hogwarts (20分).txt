@@ -1,0 +1,19 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+	int g[4];
+	scanf("%d.%d.%d", &g[1], &g[2], &g[3]);
+	int g1[4];
+	scanf("%d.%d.%d", &g1[1], &g1[2], &g1[3]);
+	int jinzhi[4] = { 0,100000000,17,29 };
+	for (int n1 = 3; n1 >= 1; n1--)
+	{
+		g[n1] = g[n1] + g1[n1];
+		g[n1 - 1] = g[n1] / jinzhi[n1] + g[n1 - 1];
+		g[n1] = g[n1] % jinzhi[n1];
+	}
+	printf("%d.%d.%d", g[1], g[2], g[3]);
+	system("pause");
+	return 0;
+}

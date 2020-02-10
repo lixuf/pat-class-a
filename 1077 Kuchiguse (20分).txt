@@ -1,0 +1,69 @@
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+int main()
+{
+	int n;
+	cin >> n;
+	vector<string> ins;
+	string cc;
+	getline(cin, cc);
+	int c2 = 0;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		string mid;
+		getline(cin, mid);
+		if (mid.size() == 0)
+		{
+			c2 = 1;
+		}
+		ins.push_back(mid);
+	}
+	if (c2 == 1)
+	{
+		cout << "nai";
+		return 0;
+	}
+	string result;
+	int swi = 0;
+	for (int n1 = 1;swi!=1; n1++)
+	{
+		if (ins[0].end() - n1 == ins[0].begin())
+		{
+			swi = 1;
+		}
+		char compara = *(ins[0].end() - n1);
+		for (int n2 = 1; n2 < ins.size(); n2++)
+		{
+			if (ins[n2].end() - n1 == ins[n2].begin())
+			{
+				swi = 1;
+			}
+			char mid = *(ins[n2].end() - n1);
+			if (mid == compara)
+			{
+				if (n2 == ins.size() - 1)
+				{
+					result.insert(result.begin(), compara);
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		
+	}
+	if (result.size() == 0)
+	{
+		cout << "nai";
+	}
+	else
+	{
+		cout << result;
+	}
+	system("pause");
+	return 0;
+}

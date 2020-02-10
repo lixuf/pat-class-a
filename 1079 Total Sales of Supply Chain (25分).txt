@@ -1,0 +1,93 @@
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<cstdio>
+using namespace std;
+const int maxlen = 100010;
+struct Node
+{
+	int goods;
+	vector<int> son;
+}node[maxlen];
+float power(float x, int n)
+{
+	float ans = 1;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		ans *= x;
+	}
+	return ans;
+}
+
+int main()
+{
+	
+	double sum = 0;
+	int n;
+	cin >> n;
+	double precen, p;
+	scanf("%lf%lf", &p, &precen);
+	precen = precen / 100+1;
+	
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		if (mid != 0)
+		{
+			for (int n2 = 0; n2 < mid; n2++)
+			{
+				int mid1;
+				cin >> mid1;
+				node[n1].son.push_back(mid1);
+				
+			}
+		}
+		else
+		{
+			int mid1;
+			cin >> mid1;
+			node[n1].goods=mid1;
+		}
+	}
+	queue<Node> one, two;
+	one.push(node[0]);
+	int level = 0;
+	while (!one.empty() || !two.empty())
+	{
+		while (!one.empty())
+		{
+			if (one.front().son.size() == 0)
+			{
+				sum += p * one.front().goods;
+
+			}
+			for (int n1 = 0; n1 < one.front().son.size(); n1++)
+			{
+				two.push(node[one.front().son[n1]]);
+			}
+			one.pop();
+		}
+		p = p * precen;
+		while (!two.empty())
+		{
+			if (two.front().son.size() == 0)
+			{
+				sum += p * two.front().goods;
+
+			}
+			for (int n1 = 0; n1 < two.front().son.size(); n1++)
+			{
+				one.push(node[two.front().son[n1]]);
+			}
+			two.pop();
+			
+		}
+		p = p * precen;
+	}
+	printf("%.1f", sum);
+	cout << '\n';
+	system("pause");
+	return 0;
+}
+

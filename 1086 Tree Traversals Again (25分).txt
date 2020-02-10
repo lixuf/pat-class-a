@@ -1,0 +1,100 @@
+#include<queue>
+#include<string>
+#include<algorithm>
+#include<iostream>
+#include<stack>
+using namespace std;
+struct node
+{
+	int val;
+	node* left;
+	node* right;
+};
+
+vector<int> pre, post, in;
+int n;
+
+node *create_tree(int inl,int inr,int prel,int prer)
+{
+	if (prel > prer)
+	{
+		return NULL;
+	}
+
+	node *root = new node;
+	root->val = pre[prel];
+	int k;
+	for (int n1 = inl; n1 <= inr; n1++)
+	{
+		if (in[n1] == pre[prel])
+		{
+			k = n1;
+			break;
+		}
+	}
+	root->left = create_tree(inl, k - 1, prel + 1, prel + k - inl);
+	root->right = create_tree(k + 1, inr, prel + k - inl + 1, prer);
+	return root;
+}
+int main()
+{
+	stack<int> op;
+	cin >> n;
+	for (int n1 = 0; n1 < n*2; n1++)
+	{
+		string mid;
+		cin >> mid;
+		
+		if (mid[1] == 'u')
+		{
+
+			cin >> mid;
+			
+			int mid2 = stoi(mid);
+			pre.push_back(mid2);
+			op.push(mid2);
+		}
+		else
+		{
+			in.push_back(op.top());
+			op.pop();
+		}
+	}
+	node * root = create_tree(0,in.size()-1,0,pre.size()-1);
+	stack<node*>postorder;
+	postorder.push(root);
+	while (!postorder.empty())
+	{
+		if (postorder.top()->left != NULL)
+		{
+			postorder.push(postorder.top()->left);
+			continue;
+		}
+		if (postorder.top()->right != NULL)
+		{
+			postorder.push(postorder.top()->right);
+			continue;
+		}
+		post.push_back(postorder.top()->val);
+		postorder.pop();
+		if (!postorder.empty())
+		{
+			if (postorder.top()->left != NULL)
+			{
+				postorder.top()->left = NULL;
+			}
+			else
+			{
+				postorder.top()->right = NULL;
+			}
+		}
+	}
+	for (int n1 = 0; n1 < n - 1; n1++)
+	{
+		cout << post[n1] << ' ';
+	}
+	cout << post[n - 1];
+
+	system("pause");
+	return 0;
+}

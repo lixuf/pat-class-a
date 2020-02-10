@@ -1,0 +1,46 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+const int maxlen = 1001;
+int tree[maxlen],n,index=0;
+vector<int> in;
+void inorder(int root)
+{
+	if (root > n)
+	{
+		return;
+	}
+	inorder(root * 2);
+	tree[root] = in[index++];
+	inorder(root * 2 + 1);
+}
+
+int main()
+{
+	
+	cin >> n;
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		int mid;
+		cin >> mid;
+		in.push_back(mid);
+	}
+	sort(in.begin(),in.end());
+	inorder(1);
+	for (int n1 = 0; n1 < n; n1++)
+	{
+		cout << tree[n1 + 1];
+		if (n1 != n - 1)
+		{
+			cout << ' ';
+		}
+		else
+		{
+			cout << '\n';
+		}
+	}
+	system("pause");
+	return 0;
+}

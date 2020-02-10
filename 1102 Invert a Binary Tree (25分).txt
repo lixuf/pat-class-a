@@ -1,0 +1,116 @@
+#includeiostream
+#includevector
+#includestring
+#includequeue
+#includestack
+using namespace std;
+const int maxlen = 11;
+int n;
+
+vectorint lnode(maxlen, -1), rnode(maxlen, -1);
+struct Node
+{
+	int right, left;
+}node[maxlen];
+void create(int k)
+{
+	node[k].left = rnode[k];
+	node[k].right = lnode[k];
+	if (lnode[k] != -1)
+	{
+		create(lnode[k]);
+	}
+	if (rnode[k] != -1)
+	{
+		create(rnode[k]);
+	}
+	return;
+}
+int main()
+{
+	cin  n;
+	vectorint froot(n,0);
+	for (int n1 = 0; n1  n; n1++)
+	{
+		string mid;
+		cin  mid;
+		if (mid[0] != '-')
+		{
+			lnode[n1] = stoi(mid);
+			froot[stoi(mid)] = 1;
+		}
+		cin  mid;
+		if (mid[0] != '-')
+		{
+			rnode[n1] = stoi(mid);
+			froot[stoi(mid)] = 1;
+		}
+	}
+	int k;
+	for (int n1 = 0; n1  n; n1++)
+	{
+		if (froot[n1] == 0)
+		{
+			k = n1;
+		}
+	}
+	create(k);
+	queueint level;
+	level.push(k);
+	int count = n;
+	while (!level.empty())
+	{
+		count--;
+		coutlevel.front();
+		if (count!= 0)
+		{
+			cout  ' ';
+		}
+		if (node[level.front()].left != -1)
+		{
+			level.push(node[level.front()].left);
+		}
+		if (node[level.front()].right != -1)
+		{
+			level.push(node[level.front()].right);
+		}
+		level.pop();
+	}
+	cout  'n';
+	stackint in;
+	in.push(k);
+	while (!in.empty())
+	{
+		int mid, mid1;
+		if (node[in.top()].left != -1)
+		{
+			mid1 = in.top();
+			in.push(node[in.top()].left);
+			
+			node[mid1].left = -1;
+			
+			continue;
+		}
+		else
+		{
+			cout  in.top();
+			n--;
+			if (n != 0)
+			{
+				cout  ' ';
+			}
+			mid = in.top();
+			in.pop();
+		}
+		if (node[mid].right != -1)
+		{
+			
+			
+			in.push(node[mid].right);
+			node[mid].right = -1;
+		}
+		
+	}
+	system(pause);
+	return 0;
+}

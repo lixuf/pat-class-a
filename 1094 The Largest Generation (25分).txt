@@ -1,0 +1,68 @@
+#include<cstdio>
+#include<queue>
+#include<vector>
+using namespace std;
+const int maxlen = 102;
+struct Node
+{
+	vector<int> son;
+
+}node[maxlen];
+int main()
+{
+	int n, m;
+	scanf("%d%d", &n, &m);
+	int root=1;
+	for (int n1 = 0; n1 < m; n1++)
+	{
+		int rootnode, numson;
+		scanf("%d%d", &rootnode, &numson);
+		for (int n2 = 0; n2 < numson; n2++)
+		{
+			int sonnode;
+			scanf("%d", &sonnode);
+			node[rootnode].son.push_back(sonnode);
+		}
+	}
+	queue<int> one, two;
+	one.push(root);
+	int maxlevel=0, maxnum=0, level=0;
+	while (!one.empty() || !two.empty())
+	{
+		if (maxnum < one.size())
+		{
+			maxnum = one.size();
+			maxlevel = level;
+		}
+		while (!one.empty())
+		{
+			for (int n1 = 0; n1 < node[one.front()].son.size(); n1++)
+			{
+				two.push(node[one.front()].son[n1]);
+			}
+			one.pop();
+		}
+		level++;
+		if (maxnum < two.size())
+		{
+			maxnum = two.size();
+			maxlevel = level;
+		}
+		while (!two.empty())
+		{
+			for (int n1 = 0; n1 < node[two.front()].son.size(); n1++)
+			{
+				one.push(node[two.front()].son[n1]);
+			}
+			two.pop();
+		}
+		level++;
+
+	}
+	maxlevel++;
+	printf("%d %d", maxnum, maxlevel);
+	
+	return 0;
+
+
+}

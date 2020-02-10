@@ -1,0 +1,134 @@
+#include<iostream>
+#include<vector>
+#include<string>
+using namespace std;
+struct node
+{
+	int index;
+	int val;
+	node(int _index, int _val) :index(_index), val(_val) {};
+};
+const int inf = 1000000000;
+const int maxv = 1020;
+int n, m, k, ds;
+vector<vector<node>> tu(maxv);
+vector<vector<int>> juli(maxv);
+void dij()
+{
+	for (int n1 = 1; n1 <= m; n1++)
+	{
+		int g = n1 + n;
+		vector<int> juli_(n + m + 1, inf);
+		juli_[g] = 0;
+		vector<int>vis(n + m + 1, false);
+		for (int n2 = 1; n2 <= n + m; n2++)
+		{
+			int u = -1, min = inf;
+			for (int n3 = 1; n3 < juli_.size(); n3++)
+			{
+				if (juli_[n3] < min&&vis[n3] == false)
+				{
+					min = juli_[n3];
+					u = n3;
+				}
+			}
+			if (u == -1)break;
+			vis[u] = true;
+			for (int n3 = 0; n3 < tu[u].size(); n3++)
+			{
+				int ind = tu[u][n3].index;
+				int val = tu[u][n3].val;
+				if (vis[ind] == false && val + juli_[u] < juli_[ind])
+				{
+					juli_[ind] = val + juli_[u];
+				}
+			}
+		}
+		juli[n1] = juli_;
+	}
+}
+int main()
+{
+	cin >> n >> m >> k >> ds;
+	for (int n1 = 0; n1 < k; n1++)
+	{
+		string mid1, mid2;
+		int mid1_, mid2_;
+		int mid3;
+		cin >> mid1 >> mid2 >> mid3;
+		if (mid1[0] == 'G')
+		{
+			mid1.erase(0,1);
+			mid1_ = stoi(mid1);
+			mid1_ = mid1_ + n;
+		}
+		else
+		{
+			mid1_ = stoi(mid1);
+		}
+		if (mid2[0] == 'G')
+		{
+			mid2.erase(0,1);
+			mid2_ = stoi(mid2);
+			mid2_ = mid2_ + n;
+		}
+		else
+		{
+			mid2_ = stoi(mid2);
+		}
+		tu[mid1_].push_back(node(mid2_, mid3));
+		tu[mid2_].push_back(node(mid1_, mid3));
+	}
+	dij();
+
+	float ave = 0.0;
+	int minindex=-1;
+	float minsum=0;
+	for (int n1 = 1; n1 <= m; n1++)
+	{
+		int min = inf;
+		float sum = 0;
+		bool swich = false;
+		for (int n2 = 1; n2 <= n; n2++)
+		{
+			if (juli[n1][n2] > ds)
+			{
+				swich = true;
+				break;
+			}
+			if (min > juli[n1][n2])
+			{
+				min = juli[n1][n2];
+			}
+			sum += juli[n1][n2];
+		}
+		if (swich)
+		{
+			continue;
+		}
+		if (minsum < min)
+		{
+			minsum = min;
+			minindex = n1;
+			ave = sum / n;
+		}
+		else if (minsum == min && ave > sum / n)
+		{
+			minindex = n1;
+			ave = sum / n;
+		}
+
+
+	}
+	if (minindex == -1)
+	{
+		cout << "No Solution";
+		system("pause");
+			return 0;
+	}
+	cout << "G" << minindex << "\n";
+	printf("%.1f %.1f", minsum, ave);
+	system("pause");
+	return 0;
+
+}
